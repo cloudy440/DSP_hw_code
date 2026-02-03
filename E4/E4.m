@@ -1,0 +1,161 @@
+%% Experiment 6.1
+N=500;
+w=[0:N]* pi/N;
+X=exp(j* w)./(exp(j* w)-0.5 *ones(1,N+1));
+magX=abs(X);
+angX=angle(X);
+realX=real(X);
+imagX=imag(X) ;
+subplot(2,2,1); plot(w/pi,magX); 
+grid on;
+xlabel('频率(单位\pi)');
+ylabel('幅度|H(e^j^\omega)|');
+subplot(2 ,2,2); plot(w/pi,realX);
+grid on;
+xlabel('频率(单位\pi)');
+ylabel('实部');
+subplot(2,2,3);plot(w/pi,angX);
+grid on;
+xlabel('频率(单位\pi)');
+ylabel('相位(弧度)');
+subplot(2 ,2 ,4);plot( w/pi, imagX);
+grid on;xlabel('频率(单位\pi)');ylabel('虚部');
+
+%% Experiment 6.2
+n=-5:5;
+x=(-0.9).^n;
+k=-200:200;
+w=(pi/100)*k;
+X=x*(exp(-j* pi/100)).^(n'*k);
+magX=abs(X);
+angX= angle(X);
+subplot(2,1,1);plot(w/pi,magX);grid on;
+axis([-2,2,0,15]);
+xlabel('\omega(x\pi)');
+ylabel('幅度|H(ej\omega)|');
+subplot(2,1,2);plot(w/pi,angX/pi);grid on;
+axis([-2,2,-1,1]);xlabel('\omega(x\pi)'); ylabel('相位(弧度/\pi)');
+
+%% Experiment 6.2.2
+clear;clc;close all;
+n=-5:5;
+xn=(-0.9).^n;
+k1=-0:1000;
+w=(pi/500)*k1;
+X=xn*(exp(-j*pi/500)).^(n'*k1);
+magX=abs(X);
+angX=angle(X);
+Xk=DFTmat(xn);
+N=length(xn);
+k=0:N-1;
+Xk1=Xk.*exp(j*2*pi*5*k/N);
+magXk=abs(Xk1);
+angXk=angle(Xk1);
+subplot(2,1,1);plot(w/pi,magX,'--');hold on;
+stem(2*k/N,magXk);
+hold off;axis([0,2,0,15]);grid on;
+xlabel('\omega(x\pi)');ylabel('幅度|X(k)|');
+subplot(2,1,2);plot(w/pi,angX/pi,'--');
+hold on;stem(2*k/N,angXk/pi);
+hold off;axis([0,2,-1,1]);grid on;
+xlabel('\omega(x\pi)');ylabel('相位(弧度/pi)');
+
+%% Experiment 6.3
+clear;clc;close all;
+N=1000;
+w=[0:N-1]*2*pi/N;
+X=(sin(2*w)./sin(w/2)).*exp(-j*3*w/2);
+magX=abs(X);angX=angle(X);
+subplot(2,1,1);plot(w/pi,magX);grid on;
+xlabel('\omega(x\pi)') ;ylabel('幅度|X(e^j^\omega)|');
+subplot(2,1,2);
+plot(w/pi,angX);
+grid on;
+xlabel('\omega(x\pi)') ;ylabel('相位');
+
+%% Experiment 6.3.2
+clear;clc;close all;
+n=0:3;xn=[1,1,1,1];
+k1=0:1000;
+w=(pi/500)*k1;
+X=xn*(exp(-j*pi/500)).^(n'* k1);
+magX=abs(X);
+angX=angle(X);
+N=length(xn);
+nl=0:N-1;
+k=nl;
+nk=nl'*k;
+WN=exp(-j*2*pi/N);
+Wnk=WN.^nk;
+Xk=xn*Wnk;
+magXk=abs(Xk);
+angXk=angle(Xk);
+subplot(2,1,1);plot(w/pi,magX,'k--');hold on;
+stem(2*k/N,magXk);
+hold off;axis([0,2,0,5]);grid on;
+xlabel('\omega(x\pi)');ylabel('幅度|X(k)|');
+subplot(2,1,2);plot(w/pi,angX/pi,'k--');
+hold on;
+stem(2*k/N,angXk/pi);
+hold off;axis([0,2,-1,1]);grid on;
+xlabel('\omega(x\pi)');ylabel('相位/\pi');
+
+%% Experiment 6.4
+clear;clc;close all;
+n=0:99;
+x=cos(0.48*pi*n)+cos(0.52*pi*n);
+n1=0:9;
+xl=x(1:10);
+N=length(xl);
+X1=DFTfor(xl);
+k=n1;w=2*pi*k/N;
+magX1=abs(X1);
+subplot(2,1,1);
+stem(n1,xl);
+ylabel('x(n)');
+xlabel('n');
+grid on;
+subplot(2,1,2);
+stem(w/pi,magX1);
+ylabel('|X_1_0(k)|');xlabel('\omega(x\pi)');
+grid on;
+
+%% Experiment 6.4.2
+clear;clc;close all;
+n=0:99;
+x=cos(0.48 *pi*n)+cos(0.52*pi*n);
+x2=[x(1:10),zeros(1,90)];
+N=length(x2);
+X2=DFTfor(x2);
+k=n;
+w=2*pi*k/N;
+magX2=abs(X2);
+subplot(2,1,1);stem(n,x2);
+ylabel('x(n)');
+xlabel('n');
+grid on;
+subplot(2,1,2);
+plot(w/pi,magX2);
+ylabel('|X(e^j^\omega)| ');
+xlabel('\omega(x\pi)');
+grid on;
+
+%% Experiment 6.4.3
+clear;clc;close all;
+n=0:99;
+x3=cos(0.48*pi*n)+cos(0.52*pi*n);
+N=length(x3);
+X3=DFTmat(x3);
+k=n;
+w=2*pi*k/N;
+magX3=abs(X3);
+subplot(2,1,1);
+stem(n,x3);
+ylabel('x(n)');
+xlabel('n');
+grid on;
+subplot(2,1,2);
+plot(w/pi,magX3);
+ylabel('|X(e^j^\omega)|');
+xlabel('\omega(x\pi)');
+grid on;
